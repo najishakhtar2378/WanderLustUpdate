@@ -1,4 +1,4 @@
-<h1 align="center">🚀 WanderNest — MERN Travel Web App</h1>
+<h1 align="center">🚀 Wanderlust — MERN Travel Web App</h1>
 
 <p align="center">
   ✈️ A full-featured travel booking and exploration web app built with <strong>Node.js</strong>, <strong>Express.js</strong>, <strong>MongoDB</strong>, <strong>EJS</strong>, and <strong>Cloudinary</strong> — featuring dynamic UI, authentication, cloud image uploads, and MVC architecture.
