@@ -54,10 +54,7 @@ WanderNest/
 
 ### 1️⃣ Clone the repo
 
-```bash
-git clone https://github.com/kumarshubhh/Major-Project.git
-cd Major-Project
-```
+
 
 ### 2️⃣ Install dependencies
 
@@ -83,7 +80,7 @@ SESSION_SECRET=your_custom_secret
 npm start
 ```
 
-Go to 👉 [http://localhost:3000](http://localhost:3000)
+Go to 👉 [http://localhost:5000](http://localhost:5000)
 
 ---
 
@@ -110,16 +107,6 @@ Go to 👉 [http://localhost:3000](http://localhost:3000)
 - Middleware-based validation (Joi)
 - RESTful routing and modular structure
 
----
-
-## 👨‍💻 Developer
-
-**Shubhanshu Kumar**  
-🌐 [LinkedIn](https://www.linkedin.com/in/shubhanshu-kumar-6a961525a/)  
-📫 Email: [subhanshukumar290@gmail.com](mailto:subhanshukumar290@gmail.com)  
-💬 Discord: `shubhanshu0270_27600`
-
----
 
 ## 📄 License
 
