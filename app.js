@@ -1,178 +1,113 @@
-if(process.env.NODE_ENV!= "production"){
-    require("dotenv").config();
+// Environment variables
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
 }
+console.log(process.env.SECRET);
 
-
-
+// Core packages
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
-
 const path = require("path");
+const mongoose = require('mongoose');
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+const session = require("express-session");
+const MongoStore = require('connect-mongo');
+const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
 
-const EpressErr = require("./utils/ExpressError");
-
-const Review = require("./models/review.js");
-const listingRouter = require("./routes/listing.js")
-const reviewsRouter = require("./routes/review.js")
-const userRouter= require("./routes/user.js")
-
-
-
-const session = require("express-session")
-const MongoStore = require("connect-mongo")
-const flash = require("connect-flash")
-const passport = require("passport")
-const LocalStrategy = require("passport-local")
+// Models
 const User = require("./models/user.js");
+const Review = require("./models/review.js"); // ✅ Correct path
 
-const serverless = require("serverless-http");
-const router = require("./routes/listing.js");
+// Routers
+const listingsRouter = require("./routes/listing.js");
+const reviewsRouter = require("./routes/review.js"); // ✅ Correct path
+const userRouter = require("./routes/user.js");
 
-
-const dbUrl = process.env.ATLASDB_URL;
-const port = process.env.PORT || 8080;
-
-
+// Utilities
+const ExpressError = require("./utils/ExpressError.js");
+const dbUrl=process.env.ATLASDB_URL;
+// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 main()
-.then(() =>{
-    console.log("connection was succseful")
-})
-
-.catch(err => console.log(err));
-
+    .then(() => {
+        console.log("connect to DB")
+    }).catch((err) => {
+        console.log(err)
+    })
 async function main() {
-  await mongoose.connect(dbUrl);
-
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+    await mongoose.connect(dbUrl)
 }
-
+// ejs setting
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use(express.urlencoded({extended:true}));
-app.use(methodOverride("_method"));
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"))
+// use ejs-locals for all ejs templates:
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 const store = MongoStore.create({
-    mongoUrl:dbUrl,
-    crypto:{
-        secret: process.env.SECRET,
-    },
-    touchAfter:24 * 3600,
+  mongoUrl: dbUrl,
+  crypto: {
+    secret: process.env.SECRET,
+  },
+  touchAfter: 24 * 3600
 })
-store.on("error", ()=>{
-    console.log("Error in Mongo Session " , err)
+store.on("error",()=>{
+  console.log("ERROR IN MONGO SESSION STORE",err)
 })
-
-
-const sessionOptions = {
-    store,
+//  express session 
+const sessionOption = {
+    // store,
     secret: process.env.SECRET,
     resave: false,
-
     saveUninitialized: true,
-    cookie:{
-        expires: Date.now() + 7*24*60*60*1000,
-        maxAge:7*24*60*60*1000,
-        httpOnly : true,
-    }
-}
-
-
-
-
-
-
-app.use(session(sessionOptions));
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true
+    },
+};
+// app.get("/", (req, res) => {
+//   res.send("hi i am root")
+// })
+//session and flass related query
+app.use(session(sessionOption));
 app.use(flash());
-
+//pasport related 
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
+
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use((req, res, next) =>{
-    res.locals.success = req.flash("success");
-    res.locals.error = req.flash("error");
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success")
+    res.locals.error = req.flash("error")
     res.locals.currUser = req.user;
     next();
 })
-
-// app.get("/register", async (req, res) =>{
-// let fakeUser = new User({
-//     email:"abcd@gmail.com",
-//     username: "delta-student",
-// });
-// let registerUser = await User.register(fakeUser, "helloWorld");
-// res.send(registerUser)
-// })
-
-
-
-
-// app.get("/testListing", async (req, res) =>{
-//     let sampleListing = new Listing({
-//         title:"My New Villa",
-//         description: "By the beach",
-//         price: 1200,
-//         location:"Calangute, Goa",
-//         countory: "India"
-//     });
-//   await  sampleListing.save();
-//   console.log("sample was saved ");
-//   res.send("succseful testing ");
-
-// });
-
-// index route 
-
-
-
-app.use("/listings", listingRouter);
+// search route
+// server.js
+//all listing are use in routers file
+// use in app.js
+app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewsRouter);
-app.use("/",  userRouter)
+app.use("/", userRouter);
 
-
-
-
-
-app.all("*", (req, res, next)=>{
-    next(new EpressErr(404, "page not Found"))
+app.all("/{*any}", (req, res, next) => {
+    next(new ExpressError(404, "page Not found"))
 })
-
-
-app.use((err, req, res, next)=>{
-    let {statusCode=500, message="Something Error"} = err;
-    res.status(statusCode).render("error.ejs", {err})
-   // res.status(statusCode).send(message);
+// create middleWare
+app.use((err, req, res, next) => {
+    // res.send("something went wrong")
+    let { statusCode = 500, message = "something went wrong" } = err;
+    res.render("listings/error.ejs", { err })
+    // res.status(statusCode).send(message);
 })
-
-
-// Catch-all route for undefined endpoints
-// app.use((req, res, next) => {
-//     res.status(404).json({ error: 'Page not found' });
-// });
-
-// // Error handling middleware
-// app.use((err, req, res, next) => {
-//     console.error(err.stack);
-//     res.status(500).json({ error: 'Something went wrong' });
-// });
-
-
-
-
-
-
-
-
-
-
-
-app.listen(port, () =>{
-    console.log("server is listenig to port 8080")
-})
+app.listen(5000, () => {
+    console.log("server is listenig on port 5000")
+});
