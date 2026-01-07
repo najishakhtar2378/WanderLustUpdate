@@ -1,33 +1,24 @@
-// Environment variables
-if (process.env.NODE_ENV !== "production") {
-    require('dotenv').config();
+if(process.env.NODE_ENV!="production"){
+  require('dotenv').config()
 }
-console.log(process.env.SECRET);
-
-// Core packages
+console.log(process.env.SECRET)
 const express = require("express");
 const app = express();
-const path = require("path");
 const mongoose = require('mongoose');
-const methodOverride = require("method-override");
-const ejsMate = require("ejs-mate");
-const session = require("express-session");
+//exports from listing.js
+const path=require("path");
+const methodOverride=require("method-override");
+const ejsMate=require("ejs-mate")
+const ExpressError=require("./utils/ExpressError.js");
+const session = require("express-session")
 const MongoStore = require('connect-mongo');
-const flash = require("connect-flash");
-const passport = require("passport");
-const LocalStrategy = require("passport-local");
-
-// Models
-const User = require("./models/user.js");
-const Review = require("./models/review.js"); // ✅ Correct path
-
-// Routers
-const listingsRouter = require("./routes/listing.js");
-const reviewsRouter = require("./routes/review.js"); // ✅ Correct path
-const userRouter = require("./routes/user.js");
-
-// Utilities
-const ExpressError = require("./utils/ExpressError.js");
+const flash=require("connect-flash")
+const passport=require("passport");
+const LocalStrategy=require("passport-local");
+const User=require("./models/user.js");
+const listingsRouter= require("./routes/listing.js");
+const reviewsRouter = require("./routes/review.js");
+const userRouter=require("./routes/user.js");
 const dbUrl=process.env.ATLASDB_URL;
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 main()
