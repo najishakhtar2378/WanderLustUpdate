@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const Listing = require('../models/listting.js');  // Corrected the path to 'listting.js'
-const Review = require('../models/review');
+const Review = require('../models/review.js');
 const { isLoggedIn, validateReview, isReviewAuthor } = require('../middileware');  // Added 'isReviewAuthor' middleware
 
 // POST route to create a review
