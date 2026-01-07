@@ -1,59 +1,46 @@
 <style>
   /* Navbar Styling */
-  .search-btn {
-      background-color: #fe424d;
-      color: #fff;
-     
-      padding: 0.5rem 1.2rem;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 10%;
-      border-top-right-radius: 25px;
-      border-bottom-right-radius: 25px;
-  }
-  
-  .search-btn:hover {
-      background-color: #e63946;
-  }
-  
-  .search-input {
-      border-top-left-radius: 25px;
-      border-bottom-left-radius: 25px;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      width: 100%;
-      
-  }
-  
-  /* Fix Navbar Collapse */
-  .navbar-collapse {
-      text-align: center;
-      background-color: #f8f9fa;
+  .navbar .search-input {
+    width: 450px; /* reduced width from 100% */
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    display: inline-block;
+}
 
-  }
-  
-  /* Responsive Fixes */
-  @media (max-width: 768px) {
-      .search-input {
-          width: 100%;
-      }
-  
-      .search-btn {
-          width: 100%;
-          margin-top: 0.5rem;
-      }
-  
-      .navbar-nav {
-          width: 100%;
-      }
-  
-      .navbar-nav .nav-link {
-          padding: 0.7rem;
-          width: 100%;
-      }
-  }
+.navbar .search-btn {
+    background-color: #fe424d;
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.6rem;
+    display: inline-block;
+    width: 100px; /* smaller width */
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    margin-left: 1px; /* pulls button closer to input */
+}
+
+.navbar .search-btn:hover {
+    background-color: #e63946;
+}
+
+/* Keep search input & button next to logo */
+.navbar .navbar-brand + .search-input,
+.navbar .navbar-brand + .search-input + .search-btn {
+    margin-left: 20px; /* small spacing from logo */
+    vertical-align: middle; /* align with logo */
+}
+
+/* Responsive for mobile */
+@media (max-width: 560px) {
+    .navbar .search-input,
+    .navbar .search-btn {
+        width: 100%; /* full width on small screens */
+        display: block;
+        margin: 0.6rem auto;
+    }
+}
   </style>
   
   <nav class="navbar navbar-expand-md navbar-light bg-light border-bottom sticky-top">
