@@ -19,7 +19,10 @@ const User=require("./models/user.js");
 const listingsRouter= require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
 const userRouter=require("./routes/user.js");
+const bookingRouter = require("./routes/booking.js");
+
 const dbUrl=process.env.ATLASDB_URL;
+
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 main()
     .then(() => {
@@ -88,6 +91,7 @@ app.use((req, res, next) => {
 app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", userRouter);
+app.use("/bookings", bookingRouter);
 
 app.all("/{*any}", (req, res, next) => {
     next(new ExpressError(404, "page Not found"))
