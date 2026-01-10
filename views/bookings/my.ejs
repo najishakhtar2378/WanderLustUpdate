@@ -1,0 +1,95 @@
+<% layout("/layouts/boilerplate") %>
+<style>
+  .my-bookings {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  .my-bookings h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+  .booking-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .booking-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .booking-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .booking-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .booking-dates {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .view-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    background: #0d6efd;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+
+  .view-link:hover {
+    background: #084298;
+  }
+
+  .no-bookings {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #777;
+  }
+</style>
+
+  <div class="my-bookings">
+    <h1>My Bookings</h1>
+
+    <% if (!bookings || bookings.length===0) { %>
+      <p class="no-bookings">No bookings found!</p>
+      <% } else { %>
+        <ul class="booking-list">
+          <% bookings.forEach(booking=> { %>
+            <li class="booking-card">
+              <div class="booking-title">
+                <strong>
+                  <%= booking.listing.title %>
+                </strong>
+              </div>
+
+              <div class="booking-dates">
+                Check-in:
+                <%= booking.checkIn ? booking.checkIn.toDateString() : "No date set" %><br>
+
+                  Check-out:
+                  <%= booking.checkOut ? booking.checkOut.toDateString() : "No date set" %>
+              </div>
+
+              <a class="view-link" href="/listings/<%= booking.listing._id %>">
+                View Listing
+              </a>
+            </li>
+            <% }) %>
+        </ul>
+        <% } %>
+  </div>
