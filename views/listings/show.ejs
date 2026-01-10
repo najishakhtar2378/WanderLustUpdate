@@ -20,15 +20,46 @@
                     <p class="card-text"><%= listing.location %>, <%= listing.country %></p>
                 </div>
             </div>
+      
+          <% if (currUser && 
+       currUser._id.equals(listing.owner._id) && !alreadyBooked) { %>
 
-            <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
-                <div class="d-flex justify-content-center mt-3">
-                    <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark me-2">Edit</a>
-                    <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
-            <% } %>
+ <div class="col-lg-6 col-md-8 col-sm-10 mx-auto mt-4">
+   <div class="card p-3 shadow-sm">
+     <h4 class="text-center">Book This Place</h4>
+
+    <form action="/bookings/<%= listing._id %>" method="POST">
+      <div class="mb-3">
+        <label class="form-label">Check-in</label>
+        <input type="date" name="checkIn" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Check-out</label>
+        <input type="date" name="checkOut" class="form-control" required>
+      </div>
+
+      <button class="btn btn-success w-100">Book Now</button>
+    </form>
+  </div>
+</div>
+<% } %>
+      <% if (currUser && alreadyBooked) { %>
+      <div class="alert alert-success text-center mt-4">
+        ✅ You have already booked this place
+      </div>
+      <% } %>
+
+      <% if (currUser && currUser._id.equals(listing.owner._id)) { %>
+      <div class="d-flex justify-content-center mt-3">
+        <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark me-2"> Edit</a>
+        <form
+          action="/listings/<%= listing._id %>?_method=DELETE"
+          method="post">
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+      <% } %>
         </div>
 
         <% if (currUser) { %>
