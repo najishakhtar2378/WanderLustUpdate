@@ -1,13 +1,11 @@
 const Listing = require("../models/listting")
+const Booking = require("../models/booking");
 
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 
 const mapToken = process.env.MAP_TOKEN;
 
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
-
-
-
 
 
 module.exports.index = async (req, res) =>{
@@ -110,3 +108,32 @@ module.exports.renderDelete = async(req,res)=>{
    req.flash("success", "Deleted Listing!")
    res.redirect("/listings")
 }
+
+module.exports.showListing = async (req, res) => {
+  const {id}= req.params;
+  const listing = await Listing.findById(id)
+    .populate("owner")
+    .populate({
+      path: "reviews",
+      populate: { path: "author" }
+    });
+
+  if (!listing) {
+    req.flash("error", "Listing not found");
+    return res.redirect("/listings");
+  }
+
+  // 🔑 ye line decide karegi book form dikhe ya nahi
+  let alreadyBooked = false;
+
+  if (req.user) {
+    const booking = await Booking.findOne({
+      listing: id,
+      user: req.user._id
+    });
+    alreadyBooked = !!booking;
+  }
+
+  // 👇 sirf listing page render hoga
+  res.render("listings/show", { listing, alreadyBooked });
+};
