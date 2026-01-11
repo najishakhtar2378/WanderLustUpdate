@@ -31,3 +31,25 @@ module.exports.myBookings = async (req, res) => {
 
   res.render("bookings/my", { bookings });
 };
+module.exports.cancelBooking = async (req, res) => {
+  const { id } = req.params;
+
+  const booking = await Booking.findById(id);
+
+  // Safety check
+  if (!booking) {
+    req.flash("error", "Booking not found");
+    return res.redirect("/bookings/my");
+  }
+
+  // Authorization check
+  if (!booking.user.equals(req.user._id)) {
+    req.flash("error", "You are not allowed to cancel this booking");
+    return res.redirect("/bookings/my");
+  }
+
+  await Booking.findByIdAndDelete(id);
+
+  req.flash("success", "Booking cancelled successfully");
+  res.redirect("/bookings/my");
+};
