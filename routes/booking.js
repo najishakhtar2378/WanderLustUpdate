@@ -14,4 +14,9 @@ router.get(
   isLoggedIn,
   bookingsController.myBookings
 );
+router.delete(
+  "/:id",
+  isLoggedIn,
+  bookingsController.cancelBooking
+);
 module.exports = router;
