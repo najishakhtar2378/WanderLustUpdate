@@ -50,9 +50,22 @@
     border-radius: 8px;
     font-size: 0.9rem;
   }
+ .view-link1{
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    background: #dc3545;
+    padding: 12px 5px;
+    border-radius: 8px;
+    padding-top: 1px;
+    font-size: 0.8rem;
+  }
 
   .view-link:hover {
     background: #084298;
+  }
+    .view-link1:hover {
+    background: hsl(0, 96%, 49%);
   }
 
   .no-bookings {
@@ -88,6 +101,11 @@
               <a class="view-link" href="/listings/<%= booking.listing._id %>">
                 View Listing
               </a>
+              <form action="/bookings/<%= booking._id %>?_method=DELETE" method="POST">
+             <button class="view-link1">
+                Cancel Booking
+               </button>
+             </form>
             </li>
             <% }) %>
         </ul>
