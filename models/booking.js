@@ -12,8 +12,18 @@ const bookingSchema = new Schema({
     ref: "User",
     required: true
   },
-  checkIn: Date,
-  checkOut: Date
+   checkIn: {
+    type: Date,
+    required: true
+  },
+  checkOut: {
+    type: Date,
+    required: true
+  },
+  totalPrice: {
+    type: Number,
+    required: true
+  }
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);
