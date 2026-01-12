@@ -1,0 +1,25 @@
+<h2 class="mb-4">Host Dashboard – Earnings</h2>
+
+<% let totalEarning = 0; %>
+
+<% bookings.forEach(b => { %>
+  <% totalEarning += b.totalPrice; %>
+
+  <div class="card mb-3 p-3 shadow-sm">
+    <h5><%= b.listing.title %></h5>
+
+    <p>
+      <strong>Earning:</strong>
+      ₹ <%= b.totalPrice.toLocaleString("en-IN") %>
+    </p>
+
+    <p>
+      <strong>Check-in:</strong> <%= b.checkIn.toDateString() %><br>
+      <strong>Check-out:</strong> <%= b.checkOut.toDateString() %>
+    </p>
+  </div>
+<% }) %>
+
+<hr>
+
+<h4>Total Earning: ₹ <%= totalEarning.toLocaleString("en-IN") %></h4>
