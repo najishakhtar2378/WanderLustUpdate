@@ -137,3 +137,14 @@ module.exports.showListing = async (req, res) => {
   // 👇 sirf listing page render hoga
   res.render("listings/show", { listing, alreadyBooked });
 };
+//calculate totalPrice 
+module.exports.hostBookings = async (req, res) => {
+  const listings = await Listing.find({ owner: req.user._id });
+
+  const bookings = await Booking.find({
+    listing: { $in: listings.map(l => l._id) },
+    status: "active"
+  }).populate("listing");
+
+  res.render("listings/hostBookings", { bookings });
+};
