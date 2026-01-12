@@ -12,12 +12,22 @@ module.exports.createBooking = async (req, res) => {
     req.flash("error", "Listing not found");
     return res.redirect("/listings");
   }
+   const nights =
+    (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
+
+  if (nights <= 0) {
+    req.flash("error", "Invalid dates");
+    return res.redirect(`/listings/${listing._id}`);
+  }
+
+  const totalPrice = nights * listing.price;
 
   const booking = new Booking({
     listing: listing._id,
     user: req.user._id,
     checkIn,
     checkOut,
+    totalPrice
   });
 
   await booking.save();
