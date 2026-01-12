@@ -11,6 +11,12 @@ module.exports.dashboard = async (req, res) => {
   })
     .populate("listing")
     .populate("user");
+    // ✅ Total earnings calculate
+  let totalEarnings = 0;
+  for (let b of bookings) {
+    totalEarnings += Number(b.totalPrice || 0);
+   
+  }
 
-  res.render("host/dashboard", { bookings });
+  res.render("host/dashboard", { bookings , totalEarnings});
 };
