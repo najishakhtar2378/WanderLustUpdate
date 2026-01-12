@@ -1,0 +1,66 @@
+<% layout("./layouts/boilerplate") %>
+<style>
+  .text-center {
+    text-align: center;
+    color: crimson;
+  }
+  .card {
+    margin-left: 10px;
+    border-radius: 12px;
+    background-color: #f9f6f5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .card-title {
+    margin-left: 10px;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #dd1313;
+  }
+</style>
+
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">🏠 Host Dashboard</h2>
+
+    <% if (bookings.length === 0) { %>
+    <p class="text-center">
+      No bookings on your listings yet.
+    </p>
+  <% } %>
+
+    <div class="row">
+      <% bookings.forEach(b => { %>
+      <div class="col-md-6 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= b.listing.title %>
+            </h5>
+
+            <p class="mb-1">
+              <strong>Guest:</strong> <%= b.user.username %>
+            </p>
+
+            <p class="mb-1">
+              <strong>Check-in:</strong> <%= b.checkIn.toDateString() %>
+            </p>
+
+            <p class="mb-1">
+              <strong>Check-out:</strong> <%= b.checkOut.toDateString() %>
+            </p>
+
+            <span class="badge bg-success">
+              Active
+            </span>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+    </div>
+  </div>
