@@ -1,10 +1,46 @@
 <% layout("./layouts/boilerplate") %>
-<body>
-    <script>
-        const mapToken = "<%= process.env.MAP_TOKEN %>";
-        const listing = <%- JSON.stringify(listing) %>;
-    </script>
+ <style>
+    .allReadyBooked{
+        text-align: center;
+        font-size: 1rem;
+        margin-top: 1rem;
+        color: green;
+        font-weight: 600;
+    }
+    .wishlist-btn {
+  border: none;
+  background: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
 
+.heart {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.heart.active {
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+ </style>
+
+<body>
+  <script>
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const listing = <%- JSON.stringify(listing) %>;
+  </script>
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 col-sm-12">
@@ -29,13 +65,15 @@
               </form>
              </div>
             <% } %>
-          <% if (currUser) { %>
+           <% if (currUser) { %>
           <form action="/wishlist/<%= listing._id %>" method="POST" class="text-center mt-2">
-           <button class="btn <%= alreadyWishlisted ? 'btn-danger' : 'btn-outline-danger' %>">
-              <%= alreadyWishlisted ? '❤️ Remove from Wishlist' : '🤍 Add to Wishlist' %>
-            </button>
-            </form>
-            <% } %>
+           <button class="btn btn-link wishlist-btn">
+            <span class="heart <%= alreadyWishlisted ? 'active' : '' %>">
+             <%= alreadyWishlisted ? '❤️' : '🤍' %>
+             </span>
+           </button>
+         </form>
+        <% } %>
       
           <% if (currUser && 
        currUser._id.equals(listing.owner._id) && !alreadyBooked) { %>
