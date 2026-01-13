@@ -1,24 +1,51 @@
 <% layout("./layouts/boilerplate") %>
+<style>
+  .wishlist-card:hover {
+  transform: translateY(-5px);
+  transition: 0.3s;
+}
+</style>
 
-<h2 class="text-center mt-4">❤️ My Wishlist</h2>
+<div class="container mt-4">
+  <h2 class="text-center mb-4">❤️ My Wishlist</h2>
 
-<div class="row mt-4">
   <% if (listings.length === 0) { %>
-    <p class="text-center">No saved listings yet.</p>
-  <% } %>
-
-  <% listings.forEach(listing => { %>
-    <div class="col-md-4 mb-3">
-      <div class="card">
-        <img src="<%= listing.image.url %>" class="card-img-top">
-        <div class="card-body">
-          <h5><%= listing.title %></h5>
-          <p>₹ <%= listing.price.toLocaleString("en-IN") %></p>
-          <a href="/listings/<%= listing._id %>" class="btn btn-sm btn-primary">
-            View
-          </a>
-        </div>
-      </div>
+    <div class="text-center mt-5">
+      <h5>My wishlist is empty</h5>
+      <a href="/listings" class="btn btn-danger mt-3">Explore Listings</a>
     </div>
-  <% }) %>
+  <% } else { %>
+
+    <div class="row">
+      <% listings.forEach(listing => { %>
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100 wishlist-card">
+            <img src="<%= listing.image.url %>" class="card-img-top">
+
+            <div class="card-body text-center">
+              <h5><%= listing.title %></h5>
+              <p class="text-muted">
+                <%= listing.location %>, <%= listing.country %>
+              </p>
+              <p class="fw-bold">
+                ₹ <%= listing.price.toLocaleString("en-IN") %>
+              </p>
+
+              <a href="/listings/<%= listing._id %>" class="btn btn-outline-dark btn-sm w-100 mb-2">
+                View Listing
+              </a>
+
+              <form action="/wishlist/<%= listing._id %>" method="POST">
+                <button class="btn btn-outline-danger btn-sm w-100">
+                  Remove ❤️
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+  <% } %>
 </div>
+
