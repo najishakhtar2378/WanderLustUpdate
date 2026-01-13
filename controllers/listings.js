@@ -125,6 +125,7 @@ module.exports.showListing = async (req, res) => {
 
   // 🔑 ye line decide karegi book form dikhe ya nahi
   let alreadyBooked = false;
+  let  alreadyWishlisted = false;
 
   if (req.user) {
     const booking = await Booking.findOne({
@@ -133,9 +134,12 @@ module.exports.showListing = async (req, res) => {
     });
     alreadyBooked = !!booking;
   }
+     if (req.user) {
+    alreadyWishlisted = req.user.wishlist.includes(listing._id);
+  }
 
   // 👇 sirf listing page render hoga
-  res.render("listings/show", { listing, alreadyBooked });
+  res.render("listings/show", { listing, alreadyBooked,alreadyWishlisted});
 };
 //calculate totalPrice 
 module.exports.hostBookings = async (req, res) => {
