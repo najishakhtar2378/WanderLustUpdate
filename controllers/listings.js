@@ -154,7 +154,7 @@ module.exports.hostBookings = async (req, res) => {
 };
 // hover wishlist in card
 module.exports.index = async (req, res) => {
-  const listings = await Listing.find({});
+  const allListings = await Listing.find({});
 
   let wishlistIds = [];
 
@@ -163,7 +163,7 @@ module.exports.index = async (req, res) => {
   }
 
   res.render("listings/index", {
-    listings,
+    allListings,
     wishlistIds
   });
 };
