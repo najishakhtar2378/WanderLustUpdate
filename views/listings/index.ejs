@@ -78,6 +78,15 @@
           justify-content: center;
         }
       }
+     .wishlist-btn {
+      border: none;
+       background: none;
+      font-size: 1.8rem;
+      }
+
+     .heart.active {
+     animation: pop 0.3s ease;
+     }
     </style>
 
     <div id="filters">
@@ -113,8 +122,17 @@
 
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3"> 
       <% for (let listings of allListings) { %>
-        <a href="/listings/<%= listings._id %>" class="listing-link">
-          <div class="card col listing-card">
+           <a href="/listings/<%= listings._id %>" class="listing-link">
+             <div class="card col listing-card position-relative">
+              <% if (currUser) { %>
+              <form action="/wishlist/<%= listings._id %>" method="POST"
+               class="position-absolute top-0 end-0 m-2"
+               onclick="event.stopPropagation();">
+             <button type="submit" class="btn btn-light btn-sm rounded-circle shadow">
+                🤍
+              </button>
+             </form>
+               <% } %>
             <img src="<%= listings.image.url %>" class="card-img-top" alt="listing_image">
             <div class="card-body">
               <p class="card-text">
