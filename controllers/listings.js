@@ -152,3 +152,18 @@ module.exports.hostBookings = async (req, res) => {
 
   res.render("listings/hostBookings", { bookings });
 };
+// hover wishlist in card
+module.exports.index = async (req, res) => {
+  const listings = await Listing.find({});
+
+  let wishlistIds = [];
+
+  if (req.user) {
+    wishlistIds = req.user.wishlist.map(id => id.toString());
+  }
+
+  res.render("listings/index", {
+    listings,
+    wishlistIds
+  });
+};
