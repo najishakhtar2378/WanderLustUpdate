@@ -20,6 +20,22 @@
                     <p class="card-text"><%= listing.location %>, <%= listing.country %></p>
                 </div>
             </div>
+           <% if (currUser) { %>
+             <div class="text-center mt-2">
+              <form action="/wishlist/<%= listing._id %>" method="POST">
+               <button class="btn btn-outline-danger">
+                ❤️ Add to Wishlist
+               </button>
+              </form>
+             </div>
+            <% } %>
+          <% if (currUser) { %>
+          <form action="/wishlist/<%= listing._id %>" method="POST" class="text-center mt-2">
+           <button class="btn <%= alreadyWishlisted ? 'btn-danger' : 'btn-outline-danger' %>">
+              <%= alreadyWishlisted ? '❤️ Remove from Wishlist' : '🤍 Add to Wishlist' %>
+            </button>
+            </form>
+            <% } %>
       
           <% if (currUser && 
        currUser._id.equals(listing.owner._id) && !alreadyBooked) { %>
