@@ -22,6 +22,7 @@ const userRouter=require("./routes/user.js");
 const bookingRouter = require("./routes/booking.js");
 const hostRoutes = require("./routes/host");
 const wishlistRoutes = require("./routes/wishlist.js");
+const notificationRoutes = require("./routes/notification");
 
 const dbUrl=process.env.ATLASDB_URL;
 
@@ -96,6 +97,7 @@ app.use("/", userRouter);
 app.use("/bookings", bookingRouter);
 app.use("/host", hostRoutes);
 app.use("/wishlist", wishlistRoutes);
+app.use("/", notificationRoutes);
 
 app.all("/{*any}", (req, res, next) => {
     next(new ExpressError(404, "page Not found"))
