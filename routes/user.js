@@ -5,7 +5,7 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const passport = require("passport");
 const { saveRedirectUrl } = require("../middileware.js");
 const userController = require("../controllers/users.js")
-
+const { isLoggedIn } = require("../middileware.js");
 
 
 router.route("/signup")
@@ -17,10 +17,6 @@ router.route("/login")
 .post(saveRedirectUrl,
     passport.authenticate("local", {failureRedirect:'/login', failureFlash: true}), userController.login)
 
-
-
-
-
-
 router.get("/logout", userController.logout)
+router.get("/profile", isLoggedIn, userController.profile);
 module.exports = router
