@@ -1,5 +1,6 @@
 const Booking = require("../models/booking");
 const Listing = require("../models/listting");
+const Notification = require("../models/notification");
 
 module.exports.createBooking = async (req, res) => {
   const { checkIn, checkOut} = req.body;
@@ -31,6 +32,12 @@ module.exports.createBooking = async (req, res) => {
   });
 
   await booking.save();
+  /* 🔔 NOTIFICATION */
+  await Notification.create({
+    user: req.user._id,
+    message: "Your booking has been confirmed!",
+    link: `/bookings/my`
+  });
   req.flash("success", "Booking successful!");
   res.redirect("/bookings/my");
 };
@@ -59,6 +66,12 @@ module.exports.cancelBooking = async (req, res) => {
   }
 
   await Booking.findByIdAndDelete(id);
+  //canceled bokking notfication
+  await Notification.create({
+    user: req.user._id,
+    message: "Your booking has been cancelled",
+    link: "/bookings/my"
+  });
 
   req.flash("success", "Booking cancelled successfully");
   res.redirect("/bookings/my");
