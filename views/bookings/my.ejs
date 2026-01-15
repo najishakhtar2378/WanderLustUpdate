@@ -86,7 +86,11 @@
             <li class="booking-card">
               <div class="booking-title">
                 <strong>
-                  <%= booking.listing.title %>
+                   <% if (booking.listing) { %>
+                    <%= booking.listing.title %>
+                     <% } else { %>
+                     <span class="text-danger">Listing deleted</span>
+                        <% } %>
                 </strong>
               </div>
 
