@@ -10,11 +10,18 @@ const userSchema = new Schema({
         required: true,
 
     },
+     profileImage: {
+        url: String,
+        filename: String
+    },
     wishlist:[{
         type:Schema.Types.ObjectId,
         ref:"Listing"
     }]
-});
+};
+    { timestamps: true }
+    
+);
 
 userSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model("User", userSchema)
