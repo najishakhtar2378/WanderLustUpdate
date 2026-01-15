@@ -1,0 +1,95 @@
+<% layout("./layouts/boilerplate") %>
+<style>
+/* Notifications Container */
+.notification-container {
+  max-width: 500px;
+  margin: auto;
+}
+
+/* Notification Card */
+.notification-card {
+  border-radius: 14px;
+  height: 80px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover Effect */
+.notification-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+
+/* Unread Notification */
+.notification-card.unread {
+  border-left: 8px solid #ff385c;
+  background: hwb(300 81% 2%);
+}
+
+/* Notification Icon */
+.notification-icon {
+  font-size: 1.8rem;
+  color: #ff385c;
+}
+
+/* Notification Text */
+.notification-text {
+  font-size: 1rem;
+  color: #374151;
+}
+
+/* Time (optional future use) */
+.notification-time {
+  font-size: 0.85rem;
+  color: hsl(218, 95%, 49%);
+}
+
+/* View Button */
+.notification-btn {
+  border-radius: 20px;
+  padding: 6px 14px 8px;
+  font-size: 1rem;
+}
+</style>
+
+<div class="container mt-5 notification-container">
+  <h3 class="mb-4 fw-bold">🔔 Notifications</h3>
+
+  <% if (notifications.length === 0) { %>
+    <p class="text-muted text-center">No notifications yet</p>
+  <% } %>
+
+  <% for (let n of notifications) { %>
+    <div class="card mb-3 notification-card <%= n.isRead ? '' : 'unread' %>">
+      <div class="card-body d-flex align-items-start gap-3">
+
+        <!-- Icon -->
+        <div class="notification-icon">
+        </div>
+
+        <!-- Content -->
+        <div class="flex-grow-1">
+          <p class="notification-text mb-1"><%= n.message %></p>
+          
+          <% if (n.createdAt) { %>
+            <span class="notification-time">
+              <%= new Date(n.createdAt).toDateString() %>
+            </span>
+          <% } %>
+        </div>
+
+        <!-- Action -->
+        <a href="<%= n.link %>" class="btn btn-outline-dark notification-btn">
+          View
+        </a>
+
+      </div>
+    </div>
+  <% } %>
+</div>
+
+
+
