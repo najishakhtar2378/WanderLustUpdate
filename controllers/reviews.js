@@ -9,6 +9,12 @@ module.exports.createReview = async (req, res) => {
     listings.reviews.push(newReview);
 
     await newReview.save();
+     /* 🔔 HOST NOTIFICATION */
+    await Notification.create({
+        user: listings.owner, // HOST
+        message: "⭐ New review on your listing!",
+        link: `/listings/${listings._id}`
+    });
     await listings.save();
 
     console.log("new review saved");
